@@ -28,6 +28,8 @@ const config: Config = {
         hero: 'url("/images/hero-bg.png")',
         'custom-radial':
           'radial-gradient(101.52% 100% at 50.01% 0, rgba(13, 2, 24, 0) 70%, rgba(20, 14, 83, 0.4) 100%)',
+        'custom-card':
+          'linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)), rgb(var(--background-start-rgb)))',
       },
     },
   },
