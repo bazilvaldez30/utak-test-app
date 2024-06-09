@@ -13,4 +13,23 @@
   .menu-item-primary {
     @apply flex w-full transform cursor-pointer items-center rounded p-2 text-custom-8 transition-all duration-300 ease-in-out hover:bg-custom-1 hover:text-white focus:outline-none;
   }
+  .button-primary {
+    @apply flex transform items-center justify-center gap-4 bg-blue-100 px-4 py-2 font-semibold tracking-wider text-white transition-all duration-500 ease-in-out hover:scale-105 hover:bg-opacity-75 md:px-7 md:py-2 md:text-[16px];
+  }
+  .button-secondary {
+    @apply flex transform items-center gap-4 px-6 py-[10px] text-sm font-semibold tracking-wider text-white transition-all duration-500 ease-in-out hover:scale-105 hover:bg-opacity-75 md:text-[16px];
+  }
+  .button-outlined {
+    @apply flex transform items-center gap-4 border-4 px-4 py-2 text-sm font-semibold tracking-wider text-white transition-all duration-500 ease-in-out hover:scale-105 hover:bg-opacity-75 md:px-7 md:py-2;
+  }
+  .text-custom-gradient {
+    background-image: linear-gradient(
+      to right,
+      #805ad5,
+      #d782d9
+    ); /* Purple gradient */
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }

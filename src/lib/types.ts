@@ -14,10 +14,16 @@ interface Option {
 }
 
 interface Menu {
+  id?: string
   category: string
   name: string
   options?: Option[]
   price: number
+  cost: number
   amountInStock: number
   image: string
+}
+
+interface MenuCategory {
+  name: string
 }

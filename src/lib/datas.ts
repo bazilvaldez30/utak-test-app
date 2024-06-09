@@ -7,6 +7,7 @@ export const navmenuData: INavMenuData[] = [
 
 export const menuItems: Menu[] = [
   {
+    id: '1',
     category: 'Food',
     name: 'Fries',
     options: [
@@ -20,14 +21,17 @@ export const menuItems: Menu[] = [
     image: 'https://via.placeholder.com/150?text=Fries',
   },
   {
+    id: '2',
     category: 'Food',
     name: 'Burger',
+    options: [],
     price: 5.99,
     cost: 3.0,
     amountInStock: 30,
     image: 'https://via.placeholder.com/150?text=Burger',
   },
   {
+    id: '3',
     category: 'Drink',
     name: 'Cola',
     options: [
@@ -41,6 +45,7 @@ export const menuItems: Menu[] = [
     image: 'https://via.placeholder.com/150?text=Cola',
   },
   {
+    id: '4',
     category: 'Dessert',
     name: 'Ice Cream',
     options: [
@@ -53,6 +58,7 @@ export const menuItems: Menu[] = [
     image: 'https://via.placeholder.com/150?text=Ice+Cream',
   },
   {
+    id: '5',
     category: 'Food',
     name: 'Pizza',
     options: [
@@ -65,4 +71,12 @@ export const menuItems: Menu[] = [
     amountInStock: 10,
     image: 'https://via.placeholder.com/150?text=Pizza',
   },
+]
+
+export const categoriesData: string[] = [
+  'Food',
+  'Drinks',
+  'Desserts',
+  'Snacks',
+  'Others',
 ]

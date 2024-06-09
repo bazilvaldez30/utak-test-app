@@ -23,7 +23,7 @@ interface ThemeContextProviderProps {
 export default function ThemeContextProvider({
   children,
 }: Readonly<ThemeContextProviderProps>) {
-  const [theme, setTheme] = useState<string>('light')
+  const [theme, setTheme] = useState<string>('dark')
 
   const toggleTheme = () => {
     if (theme === 'light') {

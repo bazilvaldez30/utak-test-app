@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { deleteData, getData, saveData, updateData } from './firebase/firebase'
 
 export const useNavbarScroll = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
@@ -25,4 +27,35 @@ export const useNavbarScroll = () => {
   }, [])
 
   return { isScrolled }
+}
+
+export const useMenu = () => {
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: addMenuMutation } = useMutation({
+    mutationFn: saveData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['menus'])
+    },
+  })
+
+  const { mutateAsync: updateMenuMutation } = useMutation({
+    mutationFn: updateData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['menus'])
+    },
+  })
+
+  const { mutateAsync: deleteMenuMutation } = useMutation({
+    mutationFn: deleteData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['menus'])
+    },
+  })
+
+  return {
+    addMenuMutation,
+    updateMenuMutation,
+    deleteMenuMutation,
+  }
 }
