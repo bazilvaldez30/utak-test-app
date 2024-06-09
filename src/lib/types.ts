@@ -18,7 +18,6 @@ interface Menu {
   name: string
   options?: Option[]
   price: number
-  cost: number
   amountInStock: number
   image: string
 }
