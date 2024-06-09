@@ -4,6 +4,7 @@ import '../styles/globals.css'
 import Navbar from '@/components/navbar'
 import ThemeSwitch from '@/components/theme-switch'
 import ThemeContextProvider from '@/context/theme-context'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <ThemeSwitch />
+          <Toaster position='top-center' />
         </ThemeContextProvider>
       </body>
     </html>
