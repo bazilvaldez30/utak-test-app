@@ -58,7 +58,7 @@ export default function MenusCard({ item }: Readonly<ProductCardProps>) {
         <p className='text-md px-5 capitalize'>{item.name}</p>
       </Link>
       <div className='flex px-5 gap-2'>
-        <button className='dark:bg-blue-900 bg-blue-500 text-white w-full mb-5 py-2 rounded-md hover:scale-[1.05] hover:bg-blue-600 dark:hover:bg-blue-800'>
+        <button className='bg-gradient-to-r from-blue-900 to-blue-500 text-white w-full mb-5 py-2 rounded-md hover:scale-[1.05] hover:bg-blue-600 dark:hover:bg-blue-800'>
           ADD TO CART
         </button>
 

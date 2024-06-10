@@ -124,7 +124,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
       <DialogTrigger asChild>
         {menu ? (
           <button className=' bg-gray-200 dark:bg-gray-700 hover:dark:bg-gray-600 text-white mb-5 py-2 px-3 rounded-md hover:scale-[1.15] hover:bg-gray-300'>
-            <FiEdit className='icon text-blue-600' />
+            <FiEdit className='icon text-blue-500' />
           </button>
         ) : (
           <button className='button-primary ms-auto rounded-lg text-black bg-custom-2 px-8 py-3 pe-6 flex'>

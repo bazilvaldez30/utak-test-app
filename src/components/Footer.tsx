@@ -8,8 +8,8 @@ export default function Footer() {
       </small>
       <p className='max-w-3xl'>
         <span className='font-semibold text-sm '>About this website:</span>{' '}
-        built with React & Next.js (App Router & Server Actions), Javascript,
-        Tailwind CSS, Framer Motion, Firebase Vercel hosting.
+        built with React & Next.js, Javascript, Tailwind CSS, Framer Motion,
+        React Tanstack Query, Shadcn, Firebase, Vercel hosting.
       </p>
     </footer>
   )

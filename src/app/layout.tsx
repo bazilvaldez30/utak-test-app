@@ -5,8 +5,8 @@ import Navbar from '@/components/navbar'
 import ThemeSwitch from '@/components/theme-switch'
 import ThemeContextProvider from '@/context/theme-context'
 import { Toaster } from 'react-hot-toast'
-import Footer from '@/components/Footer'
 import Providers from '@/lib/providers'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 

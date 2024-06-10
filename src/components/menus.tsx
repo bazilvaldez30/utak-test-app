@@ -30,16 +30,15 @@ export default function Menus() {
       <div>
         <h1 className='text-5xl font-semibold text-custom-gradient'>Menu</h1>
         <p className='text-custom-11'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi,
-          corrupti.
+          Welcome to our restaurant! Explore our delicious menu items below.
         </p>
       </div>
-      <div className='flex top-[90px] z-10 py-5 items-center justify-center'>
-        <div className='w-full'>
+      <div className='flex md:flex-row flex-col top-[90px] z-10 py-5 items-center justify-center'>
+        <div className='w-full order-1 md:order-none px-6 md:px-0'>
           {/* Memoize the MenuFilter component to prevent unnecessary re-renders */}
           <MenuFilter handleSelect={handleSelect} />
         </div>
-        <div className='w-4/12'>
+        <div className='md:w-4/12 mb-5 md:mb-0'>
           <MenuForm />
         </div>
       </div>
