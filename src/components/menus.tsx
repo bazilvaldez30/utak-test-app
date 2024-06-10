@@ -1,20 +1,29 @@
-'use client'
-
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { useQuery } from 'react-query'
 import MenusCard from './menus-card'
 import MenuForm from './menu-form'
+import MenuFilter from './menu-filter'
+import { Option } from './ui/multi-selector'
 import { getData } from '@/lib/firebase/firebase'
-import { Menu } from 'lucide-react'
 
 export default function Menus() {
-  const { data, isLoading, isError, error } = useQuery<Menu[], Error>({
-    queryKey: ['menus'],
-    queryFn: getData,
-  })
+  const [filter, setFilter] = useState<string[]>([])
+  const { data, isLoading, isError, error } = useQuery<Menu[], Error>(
+    ['menus', filter],
+    getData
+  )
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) return <div>Error fetching menu items</div>
+  // Filter data using useMemo
+  const filteredData = useMemo(() => {
+    if (!data) return []
+    if (filter.length === 0) return data
+    return data.filter((item) => filter.includes(item.category))
+  }, [data, filter])
+
+  const handleSelect = (selectedOptions: Option[]) => {
+    const values = selectedOptions.map((item) => item.value.toString())
+    setFilter(values)
+  }
 
   return (
     <div className='lg:max-w-6xl space-y-6 p-6 md:p-0'>
@@ -25,14 +34,18 @@ export default function Menus() {
           corrupti.
         </p>
       </div>
-      <div className='flex sticky top-[90px] z-10 py-5 dark:bg-custom-12 bg-white items-center justify-center duration-1000'>
-        <h1 className='text-4xl font-semibold dark:text-white text-custom-12 duration-1000'>
-          Menu
-        </h1>
-        <MenuForm />
+      <div className='flex top-[90px] z-10 py-5 items-center justify-center'>
+        <div className='w-full'>
+          {/* Memoize the MenuFilter component to prevent unnecessary re-renders */}
+          <MenuFilter handleSelect={handleSelect} />
+        </div>
+        <div className='w-4/12'>
+          <MenuForm />
+        </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-1 xl:min-w-[1100px] lg:min-w-[1000px] '>
-        {data?.map((item) => (
+      <div className='grid grid-cols-1 px-8 md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-1 xl:min-w-[1100px] lg:min-w-[1000px] '>
+        {/* Render MenusCard components with filteredData */}
+        {filteredData.map((item) => (
           <MenusCard key={item.name} item={item} />
         ))}
       </div>

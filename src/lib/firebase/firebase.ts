@@ -16,7 +16,7 @@ export const saveData = async (data: Menu) => {
     })
 }
 
-export const getData = async (): Promise<Menu[]> => {
+const getAllData = async (): Promise<Menu[]> => {
   const db = getDatabase()
   const menuDataPromises = categoriesData.map(async (category) => {
     const menuRef = ref(db, `menus/${category}`)
@@ -33,6 +33,41 @@ export const getData = async (): Promise<Menu[]> => {
   // Flatten the array of arrays into a single array
   const allMenuData = menuDataArrays.flat()
   return allMenuData
+}
+
+const getFilteredData = async (filter: string[]): Promise<Menu[]> => {
+  const db = getDatabase()
+
+  const menuDataPromises = filter.map(async (category) => {
+    const menuRef = ref(db, `menus/${category}`)
+    const snapshot = await get(menuRef)
+
+    if (snapshot.exists()) {
+      const menuData = Object.values(snapshot.val()) as Menu[] // Cast to Menu[]
+      return menuData
+    } else {
+      return []
+    }
+  })
+
+  const menuDataArrays = await Promise.all(menuDataPromises)
+  // Flatten the array of arrays into a single array
+  const allMenuData = menuDataArrays.flat()
+  return allMenuData
+}
+
+export const getData = async ({
+  queryKey,
+}: {
+  queryKey: any
+}): Promise<Menu[]> => {
+  const [_, filter] = queryKey
+
+  if (filter.length === 0) {
+    return getAllData()
+  } else {
+    return getFilteredData(filter)
+  }
 }
 
 export const updateData = async (data: Menu) => {

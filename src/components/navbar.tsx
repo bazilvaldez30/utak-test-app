@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useNavbarScroll } from '../lib/hooks'
 import { cn } from '@/lib/utils'
@@ -9,12 +9,14 @@ import { navmenuData } from '@/lib/datas'
 import Image from 'next/image'
 
 export default function Navbar() {
+  const [activeMenu, setActiveMenu] = useState('menu')
+
   const { isScrolled } = useNavbarScroll()
 
   return (
     <nav
       className={cn(
-        `fixed w-full top-0 z-50 border-gray-300 px-6 border-b dark:border-b-0 dark:bg-custom-12 bg-white  duration-1000`,
+        `fixed w-full top-0 z-50 border-gray-300 px-6 border-b dark:border-b-0 dark:bg-custom-12 bg-white duration-1000`,
         isScrolled ? '' : ''
       )}
     >
@@ -33,8 +35,12 @@ export default function Navbar() {
           {navmenuData.map((item) => (
             <Link
               key={item.name}
-              className='menu-item-primary dark:text-custom-8 text-custom-12'
-              href={item.link}
+              className={cn(
+                `menu-item-primary dark:text-custom-8 text-custom-12`,
+                activeMenu === item.link ? 'bg-custom-1 text-custom-8' : ''
+              )}
+              href={`?active=${item.link}`}
+              onClick={() => setActiveMenu(item.link)}
             >
               {item.name}
             </Link>

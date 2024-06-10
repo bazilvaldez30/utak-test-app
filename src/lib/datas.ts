@@ -1,8 +1,10 @@
+import { Option } from '@/components/ui/multi-selector'
+
 export const navmenuData: INavMenuData[] = [
-  { name: 'Home', link: '#landing-page' },
-  { name: 'About', link: '#about-us' },
-  { name: 'Menu', link: '#menu' },
-  { name: 'Inquiry', link: '#inquiry' },
+  { name: 'Home', link: 'landing-page' },
+  { name: 'About', link: 'about-us' },
+  { name: 'Menu', link: 'menu' },
+  { name: 'Inquiry', link: 'inquiry' },
 ]
 
 export const menuItems: Menu[] = [
@@ -79,4 +81,27 @@ export const categoriesData: string[] = [
   'Desserts',
   'Snacks',
   'Others',
+]
+
+export const categoriesOption: Option[] = [
+  {
+    label: 'Food',
+    value: 'Food',
+  },
+  {
+    label: 'Drinks',
+    value: 'Drinks',
+  },
+  {
+    label: 'Desserts',
+    value: 'Desserts',
+  },
+  {
+    label: 'Snacks',
+    value: 'Snacks',
+  },
+  {
+    label: 'Others',
+    value: 'Others',
+  },
 ]
