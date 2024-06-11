@@ -40,7 +40,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
     price: 0,
     cost: 0,
     amountInStock: 0,
-    image: '',
+    image: ``,
   })
 
   useEffect(() => {
@@ -63,6 +63,17 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
         newValue = parseInt(value)
       } else if (id === 'options') {
         newValue = value.split(',').map((opt) => opt.trim())
+      }
+
+      // Update image URL when name changes
+      if (id === 'name') {
+        return {
+          ...prevData,
+          [id]: newValue,
+          image: `https://via.placeholder.com/150?text=${encodeURIComponent(
+            newValue
+          )}`,
+        }
       }
 
       return {
@@ -219,15 +230,21 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
               value={formData.amountInStock.toString()}
             />
           </div>
+
           {errors.image && <ErrorMsg>{errors.image}</ErrorMsg>}
+          <span className='text-custom-11 text-xs text-center -mb-4 mt-4'>
+            (Suppose to be upload image. for now it's auto generated placeholder
+            image)
+          </span>
           <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='image' className='text-right'>
+            <Label htmlFor='image' className='text-right text-custom-11'>
               Image URL
             </Label>
             <Input
+              disabled
               onChange={handleChange}
               id='image'
-              placeholder='http://example.com/image.jpg'
+              placeholder='Uplaod image'
               className='col-span-3'
               value={formData.image}
             />
