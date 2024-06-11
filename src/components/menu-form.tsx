@@ -181,7 +181,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
             <Input
               onChange={handleChange}
               id='options'
-              placeholder='Option1, Option2'
+              placeholder='Small, Medium, Large'
               className='col-span-3'
               value={formData.options?.join(', ')}
             />
@@ -198,7 +198,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
               type='number'
               step='0.01'
               className='col-span-3'
-              value={formData.price.toString()}
+              value={formData.price || ''}
             />
           </div>
           {errors.cost && <ErrorMsg>{errors.cost}</ErrorMsg>}
@@ -213,7 +213,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
               type='number'
               step='0.01'
               className='col-span-3'
-              value={formData.cost.toString()}
+              value={formData.cost || ''}
             />
           </div>
           {errors.amountInStock && <ErrorMsg>{errors.amountInStock}</ErrorMsg>}
@@ -227,7 +227,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
               placeholder='0'
               type='number'
               className='col-span-3'
-              value={formData.amountInStock.toString()}
+              value={formData.amountInStock || ''}
             />
           </div>
 
@@ -268,7 +268,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
               onClick={handleSave}
               disabled={loading}
               className={cn(
-                `button-primary !bg-custom-3 rounded-lg`,
+                `button-primary bg-custom-3 rounded-lg hover:bg-blue-900`,
                 loading && 'opacity-50 cursor-not-allowed'
               )}
             >

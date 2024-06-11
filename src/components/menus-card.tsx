@@ -38,27 +38,32 @@ export default function MenusCard({ item }: Readonly<ProductCardProps>) {
           alt={item.name}
           className='inline-block w-full p-3'
         />
-
+        <p className='text-md px-5 capitalize'>{item.name}</p>
         <div className='px-5 pb-4 pt-2'>
           {item.options && item.options.length > 0 ? (
-            item.options.map((option) => (
-              <p
-                key={option.size}
-                className='text-sm text-blue-600 dark:text-blue-300 capitalize'
-              >
-                {option ? `${option} -` : ''} P{item.price}
+            item.options.map((option: any) => (
+              <p key={option.size} className='text-sm capitalize'>
+                {option ? (
+                  <span className='text-blue-700 dark:text-blue-400'>
+                    {option} -
+                  </span>
+                ) : (
+                  ''
+                )}{' '}
+                <span className=' text-blue-700 dark:text-blue-400'>
+                  &#8369;{item.price}
+                </span>
               </p>
             ))
           ) : (
             <p className='text-sm text-blue-600 dark:text-blue-300'>
-              P{item.price}
+              &#8369;{item.price}
             </p>
           )}
         </div>
-        <p className='text-md px-5 capitalize'>{item.name}</p>
       </Link>
       <div className='flex px-5 gap-2'>
-        <button className='bg-gradient-to-r from-blue-900 to-blue-500 text-white w-full mb-5 py-2 rounded-md hover:scale-[1.05] hover:bg-blue-600 dark:hover:bg-blue-800'>
+        <button className='bg-gradient-to-r from-purple-900  to-purple-500 text-white w-full mb-5 py-2 rounded-md hover:scale-[1.05] hover:bg-purple-600 dark:hover:bg-purple-800'>
           ADD TO CART
         </button>
 
