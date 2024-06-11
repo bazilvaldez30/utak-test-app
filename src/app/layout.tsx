@@ -6,7 +6,6 @@ import ThemeSwitch from '@/components/theme-switch'
 import ThemeContextProvider from '@/context/theme-context'
 import { Toaster } from 'react-hot-toast'
 import Providers from '@/lib/providers'
-import Footer from '@/components/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,7 +27,7 @@ export default function RootLayout({
             <div className='bg-custom-radial dark:bg-custom-12 fixed -z-10 h-screen w-screen duration-1000'></div>
             <Navbar />
             {children}
-            <Footer />
+
             <ThemeSwitch />
             <Toaster position='top-center' />
           </ThemeContextProvider>
