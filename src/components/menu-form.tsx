@@ -19,16 +19,20 @@ import { FaPlus } from 'react-icons/fa'
 import { FiEdit } from 'react-icons/fi'
 import { CategoryMenu } from './menu-categories'
 import toast from 'react-hot-toast'
-import { saveData } from '@/lib/firebase/firebase'
+import { saveData, uploadFileToStorage } from '@/lib/firebase/firebase'
 import { MenuSchema } from '@/lib/schemas'
 import { cn, validationErrorHandler } from '@/lib/utils'
 import { set } from 'firebase/database'
 import ErrorMsg from './error-msg'
 import { useMenu } from '@/lib/hooks'
 
-export default function MenuForm({ menu }: { menu?: Menu }) {
-  const { addMenuMutation, updateMenuMutation, deleteMenuMutation } = useMenu()
+interface MenuFormProps {
+  menu?: Menu
+}
 
+export default function MenuForm({ menu }: Readonly<MenuFormProps>) {
+  const { addMenuMutation, updateMenuMutation, deleteMenuMutation } = useMenu()
+  const [file, setFile] = useState<File | null>(null)
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [loading, setLoading] = useState<boolean>(false)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -40,18 +44,17 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
     price: 0,
     cost: 0,
     amountInStock: 0,
-    image: ``,
+    image: '',
   })
-
+  console.log(formData)
   useEffect(() => {
     if (menu) {
       setFormData(menu)
     }
-  }, [])
+  }, [menu])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
-    console.log(id, value)
 
     setFormData((prevData) => {
       let newValue: any = value
@@ -63,17 +66,6 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
         newValue = parseInt(value)
       } else if (id === 'options') {
         newValue = value.split(',').map((opt) => opt.trim())
-      }
-
-      // Update image URL when name changes
-      if (id === 'name') {
-        return {
-          ...prevData,
-          [id]: newValue,
-          image: `https://via.placeholder.com/150?text=${encodeURIComponent(
-            newValue
-          )}`,
-        }
       }
 
       return {
@@ -90,29 +82,19 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
     }))
   }
 
-  const handleSave = async () => {
-    setLoading(true)
-    const validationResult = MenuSchema.safeParse(formData)
+  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target
 
-    if (!validationResult.success) {
-      const errorMsgs = validationErrorHandler(validationResult.error.errors)
-      setErrors(errorMsgs)
-      setLoading(false)
-      return
+    if (files && files.length > 0) {
+      setFile(files[0])
     }
+  }
 
-    if (menu) {
-      // update asset
-      await updateMenuMutation({ ...formData })
-      toast.success('Menu updated successfully')
-      return
-    }
-
-    // create asset
+  const handleAddMenu = async (formData: Menu) => {
     await addMenuMutation(formData)
     setErrors({})
-
     setFormData({
+      id: '',
       category: '',
       name: '',
       options: [],
@@ -121,9 +103,51 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
       amountInStock: 0,
       image: '',
     })
-    setLoading(false)
     setModalOpen(false)
-    console.log('qweq')
+  }
+
+  const handleUpdateMenu = async (formData: Menu) => {
+    await updateMenuMutation(formData)
+  }
+
+  const handleSave = async () => {
+    setLoading(true)
+
+    let downloadURL = ''
+    if (file) {
+      try {
+        downloadURL = await uploadFileToStorage(file)
+
+        setFormData((prevData) => ({
+          ...prevData,
+          image: downloadURL,
+        }))
+      } catch (error) {
+        setLoading(false)
+        return
+      }
+    }
+
+    const updatedFormData = {
+      ...formData,
+      image: downloadURL || formData.image,
+    }
+
+    const validationResult = MenuSchema.safeParse(updatedFormData)
+    if (!validationResult.success) {
+      const errorMsgs = validationErrorHandler(validationResult.error.errors)
+      setErrors(errorMsgs)
+      setLoading(false)
+      return
+    }
+
+    if (menu) {
+      await handleUpdateMenu(updatedFormData)
+    } else {
+      await handleAddMenu(updatedFormData)
+    }
+
+    setLoading(false)
   }
 
   const handleDelete = async () => {
@@ -134,7 +158,7 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
     <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>
         {menu ? (
-          <button className=' bg-gray-200 dark:bg-gray-700 hover:dark:bg-gray-600 text-white mb-5 py-2 px-3 rounded-md hover:scale-[1.15] hover:bg-gray-300'>
+          <button className='bg-gray-200 dark:bg-gray-700 hover:dark:bg-gray-600 text-white mb-5 py-2 px-3 rounded-md hover:scale-[1.15] hover:bg-gray-300'>
             <FiEdit className='icon text-blue-500' />
           </button>
         ) : (
@@ -232,21 +256,17 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
           </div>
 
           {errors.image && <ErrorMsg>{errors.image}</ErrorMsg>}
-          <span className='text-custom-11 text-xs text-center -mb-4 mt-4'>
-            (Suppose to be upload image. for now it&apos;s auto generated
-            placeholder image)
-          </span>
+
           <div className='grid grid-cols-4 items-center gap-4'>
-            <Label htmlFor='image' className='text-right text-custom-11'>
-              Image URL
+            <Label htmlFor='image' className='text-right'>
+              Image
             </Label>
             <Input
-              disabled
-              onChange={handleChange}
+              onChange={handleChangeImage}
+              type='file'
               id='image'
-              placeholder='Uplaod image'
+              placeholder='Upload image'
               className='col-span-3'
-              value={formData.image}
             />
           </div>
         </div>

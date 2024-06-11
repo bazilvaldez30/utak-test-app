@@ -1,12 +1,13 @@
-import { getDatabase, ref, set, push, get } from 'firebase/database'
+import { ref as databaseRef, set, push, get } from 'firebase/database'
 
 import toast from 'react-hot-toast'
-import app from './firebaseConfig'
+import { storage, db } from './firebaseConfig'
 import { categoriesData } from '../datas'
 
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+
 export const saveData = async (data: Menu) => {
-  const db = getDatabase(app)
-  const newDocRef = push(ref(db, `menus/${data.category}`))
+  const newDocRef = push(databaseRef(db, `menus/${data.category}`))
   set(newDocRef, data)
     .then(() => {
       toast.success('Menu added successfully')
@@ -17,9 +18,8 @@ export const saveData = async (data: Menu) => {
 }
 
 const getAllData = async (): Promise<Menu[]> => {
-  const db = getDatabase()
   const menuDataPromises = categoriesData.map(async (category) => {
-    const menuRef = ref(db, `menus/${category}`)
+    const menuRef = databaseRef(db, `menus/${category}`)
     const snapshot = await get(menuRef)
     if (snapshot.exists()) {
       const menuData = Object.values(snapshot.val()) as Menu[] // Cast to Menu[]
@@ -36,10 +36,8 @@ const getAllData = async (): Promise<Menu[]> => {
 }
 
 const getFilteredData = async (filter: string[]): Promise<Menu[]> => {
-  const db = getDatabase()
-
   const menuDataPromises = filter.map(async (category) => {
-    const menuRef = ref(db, `menus/${category}`)
+    const menuRef = databaseRef(db, `menus/${category}`)
     const snapshot = await get(menuRef)
 
     if (snapshot.exists()) {
@@ -71,8 +69,7 @@ export const getData = async ({
 }
 
 export const updateData = async (data: Menu) => {
-  const db = getDatabase(app)
-  const docRef = ref(db, `menus/${data.category}/${data.id}`)
+  const docRef = databaseRef(db, `menus/${data.category}/${data.id}`)
   set(docRef, data)
     .then(() => {
       toast.success('Menu updated successfully')
@@ -83,8 +80,7 @@ export const updateData = async (data: Menu) => {
 }
 
 export const deleteData = async (data: Menu) => {
-  const db = getDatabase(app)
-  const docRef = ref(db, `menus/${data.category}/${data.id}`)
+  const docRef = databaseRef(db, `menus/${data.category}/${data.id}`)
   set(docRef, null)
     .then(() => {
       toast.success('Menu deleted successfully')
@@ -92,4 +88,22 @@ export const deleteData = async (data: Menu) => {
     .catch((error) => {
       toast.error('Error deleting menu')
     })
+}
+
+export const uploadFileToStorage = async (file: File) => {
+  const storageRef = ref(storage, `images/${file.name}`)
+  try {
+    // Upload file to Firebase Storage
+    const uploadTask = uploadBytesResumable(storageRef, file)
+    await uploadTask
+
+    // Get download URL for the uploaded file
+    const downloadURL = await getDownloadURL(storageRef)
+
+    console.log(downloadURL)
+    return downloadURL
+  } catch (error) {
+    console.error('Error uploading file:', error)
+    throw new Error('Failed to upload file')
+  }
 }

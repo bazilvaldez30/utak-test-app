@@ -36,7 +36,7 @@ export default function MenusCard({ item }: Readonly<ProductCardProps>) {
         <img
           src={item.image}
           alt={item.name}
-          className='inline-block w-full p-3'
+          className='inline-block w-full p-3 aspect-square object-cover rounded-t-lg'
         />
         <p className='text-md px-5 capitalize'>{item.name}</p>
         <div className='px-5 pb-4 pt-2'>
