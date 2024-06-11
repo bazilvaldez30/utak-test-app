@@ -33,8 +33,8 @@ export default function Navbar() {
             <Link
               key={item.name}
               className={cn(
-                `menu-item-primary dark:text-custom-8 text-custom-12`,
-                activeMenu === item.link ? 'bg-custom-1 text-custom-8' : ''
+                `menu-item-primary dark:text-custom-8 text-custom-12 hover:bg-purple-700`,
+                activeMenu === item.link ? 'bg-purple-900  text-custom-8' : ''
               )}
               href={`?active=${item.link}`}
               onClick={() => setActiveMenu(item.link)}
