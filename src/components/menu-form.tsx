@@ -233,8 +233,8 @@ export default function MenuForm({ menu }: { menu?: Menu }) {
 
           {errors.image && <ErrorMsg>{errors.image}</ErrorMsg>}
           <span className='text-custom-11 text-xs text-center -mb-4 mt-4'>
-            (Suppose to be upload image. for now it's auto generated placeholder
-            image)
+            (Suppose to be upload image. for now it&apos;s auto generated
+            placeholder image)
           </span>
           <div className='grid grid-cols-4 items-center gap-4'>
             <Label htmlFor='image' className='text-right text-custom-11'>
