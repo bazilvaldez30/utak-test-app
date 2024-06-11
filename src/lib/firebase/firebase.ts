@@ -22,7 +22,10 @@ const getAllData = async (): Promise<Menu[]> => {
     const menuRef = databaseRef(db, `menus/${category}`)
     const snapshot = await get(menuRef)
     if (snapshot.exists()) {
-      const menuData = Object.values(snapshot.val()) as Menu[] // Cast to Menu[]
+      const menuData = Object.entries(snapshot.val()).map(([id, data]) => ({
+        ...(data as object), // Ensure data is treated as an object
+        id, // Include the ID
+      })) as Menu[]
       return menuData
     } else {
       return []
@@ -41,7 +44,10 @@ const getFilteredData = async (filter: string[]): Promise<Menu[]> => {
     const snapshot = await get(menuRef)
 
     if (snapshot.exists()) {
-      const menuData = Object.values(snapshot.val()) as Menu[] // Cast to Menu[]
+      const menuData = Object.entries(snapshot.val()).map(([id, data]) => ({
+        ...(data as object), // Ensure data is treated as an object
+        id, // Include the ID
+      })) as Menu[]
       return menuData
     } else {
       return []
@@ -80,6 +86,7 @@ export const updateData = async (data: Menu) => {
 }
 
 export const deleteData = async (data: Menu) => {
+  console.log('data', data)
   const docRef = databaseRef(db, `menus/${data.category}/${data.id}`)
   set(docRef, null)
     .then(() => {

@@ -46,7 +46,7 @@ export default function MenuForm({ menu }: Readonly<MenuFormProps>) {
     amountInStock: 0,
     image: '',
   })
-  console.log(formData)
+
   useEffect(() => {
     if (menu) {
       setFormData(menu)
