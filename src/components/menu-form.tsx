@@ -108,6 +108,7 @@ export default function MenuForm({ menu }: Readonly<MenuFormProps>) {
 
   const handleUpdateMenu = async (formData: Menu) => {
     await updateMenuMutation(formData)
+    setModalOpen(false)
   }
 
   const handleSave = async () => {
